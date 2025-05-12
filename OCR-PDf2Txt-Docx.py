@@ -15,6 +15,7 @@ class PDFToOCRApp:
         self.root.title("PDF a OCR con Tkinter")
         self.root.geometry("750x600")
 
+        Image.MAX_IMAGE_PIXELS=None # Evitar error en imágenes grandes
         self.pdf_path = None
         self.images_folder = "imagenes_extraidas"
         self.pages_folder = "paginas_convertidas"
@@ -76,7 +77,7 @@ class PDFToOCRApp:
         file_path = filedialog.askopenfilename(filetypes=[("Archivos PDF", "*.pdf")])
         if file_path:
             self.pdf_path = file_path
-            self.label.config(text=os.path.basename(file_path))
+            self.label.config(text=os.path.basename(file_path), bg="black", fg="white")
 
     def extract_embedded_images(self):
         """Extrae solo las imágenes incrustadas en el PDF."""

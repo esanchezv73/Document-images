@@ -128,7 +128,8 @@ class ImageHashApp:
         filename = "HashVariations.csv"
         with open(filename, mode='a', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=['Imagen1', 'Imagen2', 'AverageHash', 'PerceptualHash', 'WaveletHash'])
-            writer.writeheader()
+            if not os.path.exists(filename):
+                writer.writeheader()
             for data in self.comparison_data:
                 writer.writerow({
                     'Imagen1': data['img1'],
@@ -168,8 +169,8 @@ class ImageHashApp:
 
 
 if __name__ == "__main__":
-    os.chdir("/home/seretur/Documentos/")
+    os.chdir("/home/seretur/Documentos/") #Modificar según necesidad y sistema operativo
     root = tk.Tk()
-    root.geometry("600x450")
+    root.geometry("600x450") # Tamaño de la ventana
     app = ImageHashApp(root)
     root.mainloop()

@@ -71,18 +71,21 @@ class ImageHashApp:
                 avg_hash = imagehash.average_hash(img)
                 phash = imagehash.phash(img)
                 whash = imagehash.whash(img)
+                dhash=imagehash.dhash(img)
 
                 hash_objects.append({
                     'name': os.path.basename(path),
                     'avg': avg_hash,
                     'phash': phash,
-                    'whash': whash
+                    'whash': whash,
+                    'dhash':dhash,
                 })
 
                 result_text += f"Imagen {idx+1}: {os.path.basename(path)}\n"
                 result_text += f"  Average Hash : {avg_hash}\n"
                 result_text += f"  Perceptual Hash: {phash}\n"
                 result_text += f"  Wavelet Hash   : {whash}\n\n"
+                result_text+=f"  Difference DHash : {dhash}\n\n"
 
             except Exception as e:
                 result_text += f"Error procesando {path}: {e}\n"
@@ -102,6 +105,7 @@ class ImageHashApp:
                 avg_diff = hamming(h1['avg'], h2['avg'])
                 phash_diff = hamming(h1['phash'], h2['phash'])
                 whash_diff = hamming(h1['whash'], h2['whash'])
+                dhash_diff = hamming(h1['dhash'], h2['dhash'])
 
                 # Guardar datos para CSV y gráfico
                 self.comparison_data.append({
@@ -109,13 +113,15 @@ class ImageHashApp:
                     'img2': h2['name'],
                     'avg': avg_diff,
                     'phash': phash_diff,
-                    'whash': whash_diff
+                    'whash': whash_diff,
+                    'dhash':dhash_diff
                 })
 
                 result_text += f"{h1['name']} vs {h2['name']}:\n"
                 result_text += f"  Diferencia Average Hash : {avg_diff}\n"
                 result_text += f"  Diferencia Perceptual   : {phash_diff}\n"
                 result_text += f"  Diferencia Wavelet      : {whash_diff}\n"
+                result_text+= f"  Diferencia DHash        : {dhash_diff}\n"
                 result_text += "-"*60 + "\n"
 
             self.save_to_csv()
@@ -127,7 +133,7 @@ class ImageHashApp:
         """Guarda los datos de comparación en un archivo CSV"""
         filename = "HashVariations.csv"
         with open(filename, mode='a', newline='', encoding='utf-8') as file:
-            writer = csv.DictWriter(file, fieldnames=['Imagen1', 'Imagen2', 'AverageHash', 'PerceptualHash', 'WaveletHash'])
+            writer = csv.DictWriter(file, fieldnames=['Imagen1', 'Imagen2', 'AverageHash', 'PerceptualHash', 'WaveletHash','DiffHash'])
             if not os.path.exists(filename):
                 writer.writeheader()
             for data in self.comparison_data:
@@ -136,7 +142,8 @@ class ImageHashApp:
                     'Imagen2': data['img2'],
                     'AverageHash': data['avg'],
                     'PerceptualHash': data['phash'],
-                    'WaveletHash': data['whash']
+                    'WaveletHash': data['whash'],
+                    'DiffHash': data['dhash']
                 })
         print(f"Datos guardados en {filename}")
 

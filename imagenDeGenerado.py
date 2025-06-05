@@ -5,16 +5,19 @@ import textwrap
 import random
 
 # Generar texto via LLM
-model = GPT4All("Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf") # downloads / loads a LLM
-prompt="genera un texto explicativo sobre las escalas de la intensidad de terremotos, con ejemplos"
+llm="Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf" #llm a usar
+prompt="genera un texto periodístico sobre las dimensiones de los campos de juego en los deportes de equipo más populares"
+
+
+model = GPT4All(llm) # descarga o carga el LLM especificado en llm
 texto=""
 with model.chat_session():
-    texto=model.generate(prompt, temp=0.92,max_tokens=860) #temperatura en 0.92 buscando "creatividad"
+    texto=model.generate(prompt, temp=0.94,max_tokens=860) #temperatura=0.94 para "creatividad" y menor repetición
 
 print("generando...")
 print(texto)
 
-os.chdir("/home/seretur/Documentos/Investigacion/Preparadas/") #CAMBIAR ESTA LÌNEA
+os.chdir("/home/seretur/Documentos/Investigacion/Preparadas/") #CAMBIAR ESTA LÌNEA!!!!
 
 # Crear el nombre de la carpeta
 nombre_carpeta = texto[:2] + texto[-6:-1]
@@ -22,10 +25,10 @@ nombre_carpeta = texto[:2] + texto[-6:-1]
 # Crear la carpeta si no existe
 os.makedirs(nombre_carpeta, exist_ok=True)
 
-# Crear lña imagen con Pillow. DEBE TENER NOMBRE DE ARCHIVO Y DE CARPETA
+# Crear la imagen con Pillow. DEBE TENER NOMBRE DE ARCHIVO Y DE CARPETA
 def creaImagen(texto, nombre_carpeta,nombre_archivo):
     # Configurar dimensiones y estilo de la imagen
-    ancho_imagen, alto_imagen = 1024, 1314
+    ancho_imagen, alto_imagen = 1586, 2244  #Proporción compatible con A4
     color_fondo = (255, 255, 255)
     color_texto = (0, 0, 0)
     margen=15 #espacio que dejarà a cada lado del texto
@@ -37,11 +40,11 @@ def creaImagen(texto, nombre_carpeta,nombre_archivo):
 
     # Fuente y tamaño
     try:
-        fuente = ImageFont.truetype("Arial.ttf", 32)  # Arial es suficientemente común
+        fuente = ImageFont.truetype("Arial.ttf", 28)  # Arial es suficientemente común
     except:
         fuente = ImageFont.load_default()
 
-    # Calcular altura de línea
+    # Calcular altura de línea para el interlineado
     linea_altura = fuente.getbbox("Ay")[3] # Altura aproximada de una línea
 
     # Área útil para texto
@@ -53,7 +56,7 @@ def creaImagen(texto, nombre_carpeta,nombre_archivo):
 
     for linea in lineas:
         dibujo.text((margen, pos_y), linea, font=fuente, fill=color_texto)
-        pos_y += linea_altura+int(linea_altura*0.1)  # Avanzar a la siguiente línea
+        pos_y += linea_altura+int(linea_altura*0.05)  # Avanzar a la siguiente línea
 
     # Guardar imagen
     ruta_archivo = os.path.join(nombre_carpeta, nombre_archivo + ".png")

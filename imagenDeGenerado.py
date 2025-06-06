@@ -6,13 +6,13 @@ import random
 
 # Generar texto via LLM
 llm="Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf" #llm a usar
-prompt="genera un texto periodístico sobre las dimensiones de los campos de juego en los deportes de equipo más populares"
+prompt="genera un texto explicativo sobre las concentraciones de metales pesados en el agua riesgosas para la salud humana, con ejemplos"
 
 
 model = GPT4All(llm) # descarga o carga el LLM especificado en llm
 texto=""
 with model.chat_session():
-    texto=model.generate(prompt, temp=0.94,max_tokens=860) #temperatura=0.94 para "creatividad" y menor repetición
+    texto=model.generate(prompt, temp=0.94,max_tokens=910) #temperatura=0.94 para "creatividad" y menor repetición
 
 print("generando...")
 print(texto)
@@ -20,7 +20,8 @@ print(texto)
 os.chdir("/home/seretur/Documentos/Investigacion/Preparadas/") #CAMBIAR ESTA LÌNEA!!!!
 
 # Crear el nombre de la carpeta
-nombre_carpeta = texto[:2] + texto[-6:-1]
+letra=str((int)(random.random()*10))
+nombre_carpeta = 'R'+letra+texto[:2] + texto[-6:-1]
 
 # Crear la carpeta si no existe
 os.makedirs(nombre_carpeta, exist_ok=True)
@@ -44,49 +45,62 @@ def creaImagen(texto, nombre_carpeta,nombre_archivo):
     except:
         fuente = ImageFont.load_default()
 
-    # Calcular altura de línea para el interlineado
-    linea_altura = fuente.getbbox("Ay")[3] # Altura aproximada de una línea
+    # Altura base de línea y espaciado entre líneas
+    linea_altura = fuente.getbbox("Ay")[3]
+    espacio_entre_lineas = int(linea_altura * 0.5)  # Menor que la altura completa
+    espacio_entre_parrafos = linea_altura * 1.5  # Más espacio entre párrafos
 
-    # Área útil para texto
-    area_ancho = ancho_imagen - 2 * margen
-    lineas = textwrap.wrap(texto, width=int(area_ancho / fuente.getlength("a")))
+    # Posición inicial
+    pos_y = margen
 
-    # Posición inicial (margen superior e izquierdo)
-    pos_y = 3*margen #Margen superior
+    # Separar por párrafos
+    parrafos = texto.split('\n\n')
 
-    for linea in lineas:
-        dibujo.text((margen, pos_y), linea, font=fuente, fill=color_texto)
-        pos_y += linea_altura+int(linea_altura*0.05)  # Avanzar a la siguiente línea
+    for i, parrafo in enumerate(parrafos):
+        # Envolver el párrafo en líneas según ancho disponible
+        area_ancho = ancho_imagen - 2 * margen
+        lineas = textwrap.wrap(parrafo, width=int(area_ancho / fuente.getlength("a")))
 
-    # Guardar imagen
-    ruta_archivo = os.path.join(nombre_carpeta, nombre_archivo + ".png")
-    imagen.save(ruta_archivo)
+        for linea in lineas:
+            dibujo.text((margen, pos_y), linea, font=fuente, fill=color_texto)
+            pos_y += linea_altura + espacio_entre_lineas  # Espaciado reducido
+
+        if i < len(parrafos) - 1:
+            pos_y += espacio_entre_parrafos  # Mayor espacio entre párrafos
+
+
+        # Guardar imagen
+        ruta_archivo = os.path.join(nombre_carpeta, nombre_archivo + ".png")
+        imagen.save(ruta_archivo)
 
     print(f"Imagen guardada en: {ruta_archivo}")
-    
+
 # función para devolver un texto con un dígito aleatorio modificado
 def reemplazar_digito(texto):
     # Encontrar todas las posiciones donde hay dígitos
     posiciones_digitos = [i for i, c in enumerate(texto) if c.isdigit()]
-    
+
     if not posiciones_digitos:
         return texto  # No hay dígitos para reemplazar
-    
+
     # Elegir una posición al azar
     pos = random.choice(posiciones_digitos)
     digito_original = texto[pos]
-    
+
     # Calcular el reemplazo
     if digito_original == '9':
         nuevo_digito = '0'
     else:
         nuevo_digito = str(int(digito_original) + 1)
-    
+
     # Construir la nueva cadena
     texto_modificado = texto[:pos] + nuevo_digito + texto[pos+1:]
-    
+
     return texto_modificado
 
 creaImagen(texto,nombre_carpeta,nombre_carpeta)
+# guardar el prompt como prueba
+with open("verPrompt","w") as archivo:
+    archivo.write(texto)
 textoAlterado=reemplazar_digito(texto)
 creaImagen(textoAlterado,nombre_carpeta,nombre_carpeta+'Alterado')

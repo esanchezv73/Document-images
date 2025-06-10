@@ -1,12 +1,12 @@
 from gpt4all import GPT4All
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 import os
 import textwrap
 import random
 
 # Generar texto via LLM
 llm="Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf" #llm a usar
-prompt="genera un texto explicativo sobre las concentraciones de metales pesados en el agua riesgosas para la salud humana, con ejemplos"
+prompt="escribe un pequeño texto explicativo sobre las medidas de los talles de calzado en Europa y Latinoamérica"
 
 
 model = GPT4All(llm) # descarga o carga el LLM especificado en llm
@@ -69,11 +69,23 @@ def creaImagen(texto, nombre_carpeta,nombre_archivo):
             pos_y += espacio_entre_parrafos  # Mayor espacio entre párrafos
 
 
-        # Guardar imagen
-        ruta_archivo = os.path.join(nombre_carpeta, nombre_archivo + ".png")
-        imagen.save(ruta_archivo)
-
+    # Guardar imagen
+    ruta_archivo = os.path.join(nombre_carpeta, nombre_archivo + ".png")
+    imagen.save(ruta_archivo)
+    if not nombre_archivo.endswith('Alterado'):
+        # Gegerar copia en JPEG. Agrega una F al nombre para señalar que se cambia el formato
+        ruta_jpg=os.path.join(nombre_carpeta, nombre_archivo+"F.jpg")
+        # imagen_rgb=imagen.convert("RGB")
+        imagen.save(ruta_jpg, "JPEG", quality=75) # copia en JPG al 75%
+        print("Guardada copia: ", ruta_jpg)    
+        #Generar copia con menos brillo
+        enhancer = ImageEnhance.Brightness(imagen)
+        img_sombra = enhancer.enhance(0.6)  # Brillo al 60%
+        ruta_png_sombra = os.path.join(nombre_carpeta,nombre_archivo+"Iluminacion.png")
+        img_sombra.save(ruta_png_sombra)
+        print(f"[+] Imagen PNG con menor iluminación guardada: {ruta_png_sombra}")
     print(f"Imagen guardada en: {ruta_archivo}")
+
 
 # función para devolver un texto con un dígito aleatorio modificado
 def reemplazar_digito(texto):
@@ -99,8 +111,8 @@ def reemplazar_digito(texto):
     return texto_modificado
 
 creaImagen(texto,nombre_carpeta,nombre_carpeta)
-# guardar el prompt como prueba
-with open("verPrompt","w") as archivo:
+# guardar el texto generado como prueba
+with open("verTexto","w") as archivo:
     archivo.write(texto)
 textoAlterado=reemplazar_digito(texto)
 creaImagen(textoAlterado,nombre_carpeta,nombre_carpeta+'Alterado')

@@ -21,7 +21,7 @@ os.chdir("/home/seretur/Documentos/Investigacion/Preparadas/") #CAMBIAR ESTA LÌ
 
 # Crear el nombre de la carpeta
 letra=str((int)(random.random()*10))
-nombre_carpeta = 'R'+letra+texto[:2] + texto[-6:-1]
+nombre_carpeta = 'R'+letra+texto[:2] + texto[-4:-1]
 
 # Crear la carpeta si no existe
 os.makedirs(nombre_carpeta, exist_ok=True)
@@ -32,7 +32,7 @@ def creaImagen(texto, nombre_carpeta,nombre_archivo):
     ancho_imagen, alto_imagen = 1586, 2244  #Proporción compatible con A4
     color_fondo = (255, 255, 255)
     color_texto = (0, 0, 0)
-    margen=15 #espacio que dejarà a cada lado del texto
+    margen=15 #espacio que dejará a cada lado del texto
     ruta_fuente = None  # Usa fuente predeterminada
 
     # Crear una imagen en blanco

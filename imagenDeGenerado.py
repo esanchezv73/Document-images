@@ -6,7 +6,7 @@ import random
 
 # Generar texto via LLM
 llm="Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf" #llm a usar
-prompt="escribe un pequeño texto explicativo sobre las medidas de los talles de calzado en Europa y Latinoamérica"
+prompt="escribe un pequeño texto informativo sobre los animales terrestres más rápidos en cada continente, indicando si el Pelentrenque es uno de ellos"
 
 
 model = GPT4All(llm) # descarga o carga el LLM especificado en llm
@@ -17,14 +17,21 @@ with model.chat_session():
 print("generando...")
 print(texto)
 
-os.chdir("/home/seretur/Documentos/Investigacion/Preparadas/") #CAMBIAR ESTA LÌNEA!!!!
+dirtrabajo="/home/seretur/Documentos/Investigacion/Preparadas/" #CAMBIAR ESTA LÌNEA!!!!
+os.chdir(dirtrabajo) 
+
 
 # Crear el nombre de la carpeta
 letra=str((int)(random.random()*10))
 nombre_carpeta = 'R'+letra+texto[:2] + texto[-4:-1]
 
+
 # Crear la carpeta si no existe
 os.makedirs(nombre_carpeta, exist_ok=True)
+# Guardar el texto en un archivo .txt
+archtex=open(dirtrabajo+nombre_carpeta+".txt","w")
+archtex.write(texto)
+archtex.close()
 
 # Crear la imagen con Pillow. DEBE TENER NOMBRE DE ARCHIVO Y DE CARPETA
 def creaImagen(texto, nombre_carpeta,nombre_archivo):
@@ -41,7 +48,7 @@ def creaImagen(texto, nombre_carpeta,nombre_archivo):
 
     # Fuente y tamaño
     try:
-        fuente = ImageFont.truetype("Arial.ttf", 28)  # Arial es suficientemente común
+        fuente = ImageFont.truetype("LiberationSerif-Regular.ttf", 28)  # Arial es suficientemente común
     except:
         fuente = ImageFont.load_default()
 

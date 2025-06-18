@@ -6,7 +6,7 @@ import random
 
 # Generar texto via LLM
 llm="Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf" #llm a usar
-prompt="escribe un pequeño texto informativo sobre los animales terrestres más rápidos en cada continente, indicando si el Pelentrenque es uno de ellos"
+prompt="escribe un pequeño texto informativo sobre los animales terrestres más rápidos en cada continente, comparando su velocidad con la del galgo"
 
 
 model = GPT4All(llm) # descarga o carga el LLM especificado en llm
@@ -16,6 +16,13 @@ with model.chat_session():
 
 print("generando...")
 print(texto)
+
+# opciones globales de creación de la imagen de texto
+
+tipografia="LiberationSerif-Regular.ttf"
+ancho,alto=1586, 2244
+tamanio_fuente=28
+lineaOpciones="Tipografía: "+tipografia+", ancho="+str(ancho)+", alto:"+str(alto)
 
 dirtrabajo="/home/seretur/Documentos/Investigacion/Preparadas/" #CAMBIAR ESTA LÌNEA!!!!
 os.chdir(dirtrabajo) 
@@ -36,7 +43,7 @@ archtex.close()
 # Crear la imagen con Pillow. DEBE TENER NOMBRE DE ARCHIVO Y DE CARPETA
 def creaImagen(texto, nombre_carpeta,nombre_archivo):
     # Configurar dimensiones y estilo de la imagen
-    ancho_imagen, alto_imagen = 1586, 2244  #Proporción compatible con A4
+    ancho_imagen, alto_imagen = ancho,alto  #Proporción compatible con A4
     color_fondo = (255, 255, 255)
     color_texto = (0, 0, 0)
     margen=15 #espacio que dejará a cada lado del texto
@@ -48,7 +55,7 @@ def creaImagen(texto, nombre_carpeta,nombre_archivo):
 
     # Fuente y tamaño
     try:
-        fuente = ImageFont.truetype("LiberationSerif-Regular.ttf", 28)  # Arial es suficientemente común
+        fuente = ImageFont.truetype(tipografia, 28)  # Arial es suficientemente común
     except:
         fuente = ImageFont.load_default()
 

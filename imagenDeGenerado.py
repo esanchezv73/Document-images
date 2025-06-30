@@ -6,7 +6,8 @@ import random
 
 # Generar texto via LLM
 llm="Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf" #llm a usar
-prompt="escribe un pequeño texto informativo sobre los animales terrestres más rápidos en cada continente, comparando su velocidad con la del galgo"
+# llm="/home/seretur/.local/share/nomic.ai/GPT4All/DeepSeek-R1-Distill-Llama-8B-Q4_0.gguf" #llm a usar
+prompt="escribe una reseña sobre los récords de velocidad alcanzados en competencias olímpicas de atletismo en los últimos 5 años. Ponle un título destacado"
 
 
 model = GPT4All(llm) # descarga o carga el LLM especificado en llm
@@ -35,6 +36,7 @@ nombre_carpeta = 'R'+letra+texto[:2] + texto[-4:-1]
 
 # Crear la carpeta si no existe
 os.makedirs(nombre_carpeta, exist_ok=True)
+
 # Guardar el texto en un archivo .txt
 archtex=open(dirtrabajo+nombre_carpeta+".txt","w")
 archtex.write(texto)

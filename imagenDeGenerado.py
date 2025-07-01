@@ -7,7 +7,37 @@ import random
 # Generar texto via LLM
 llm="Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf" #llm a usar
 # llm="/home/seretur/.local/share/nomic.ai/GPT4All/DeepSeek-R1-Distill-Llama-8B-Q4_0.gguf" #llm a usar
-prompt="escribe una reseña sobre los récords de velocidad alcanzados en competencias olímpicas de atletismo en los últimos 5 años. Ponle un título destacado"
+
+def obtener_prompt_aleatorio(nombre_archivo):
+    """
+    Lee un archivo de texto y devuelve un párrafo aleatorio.
+    
+    Parámetro:
+        nombre_archivo (str): Ruta del archivo .txt a leer.
+
+    Retorna:
+        str: Un párrafo aleatorio del archivo, o un mensaje si hay error.
+    """
+    try:
+        with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
+            contenido = archivo.read()
+
+        # Dividir por párrafos (asume que están separados por líneas vacías)
+        parrafos = [p.strip() for p in contenido.split('\n\n') if p.strip()]
+
+        if not parrafos:
+            return "El archivo no contiene párrafos válidos."
+
+        return random.choice(parrafos)
+
+    except FileNotFoundError:
+        return "❌ Archivo no encontrado."
+    except Exception as e:
+        return f"⚠️ Ocurrió un error: {e}"
+
+
+prompt=obtener_prompt_aleatorio("prompts.txt")
+# prompt="escribe una reseña sobre los récords de velocidad alcanzados en competencias olímpicas de atletismo en los últimos 5 años. Ponle un título destacado"
 
 
 model = GPT4All(llm) # descarga o carga el LLM especificado en llm

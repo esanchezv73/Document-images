@@ -7,6 +7,7 @@ import random
 # Generar texto via LLM
 llm="Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf" #llm a usar
 # llm="/home/seretur/.local/share/nomic.ai/GPT4All/Meta-Llama-3-8B-Instruct.Q4_0.gguf" #llm a usar
+# llm="/home/seretur/.local/share/nomic.ai/GPT4All/DeepSeek-R1-Distill-Llama-8B-Q4_0.gguf" #llm a usar
 
 def obtener_prompt_aleatorio(nombre_archivo):
     """

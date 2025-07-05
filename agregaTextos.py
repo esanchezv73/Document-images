@@ -24,7 +24,7 @@ ventana = tk.Tk()
 ventana.title("Guardar Párrafo")
 
 # Configurar widgets
-etiqueta = tk.Label(ventana, text="Escribe un párrafo:")
+etiqueta = tk.Label(ventana, text="Escribe un prompt para un chatbot:")
 etiqueta.pack(pady=5)
 
 entrada = tk.Text(ventana, wrap=tk.WORD, width=60, height=15)

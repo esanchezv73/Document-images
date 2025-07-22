@@ -36,7 +36,7 @@ def obtener_prompt_aleatorio(nombre_archivo):
         return f"⚠️ Ocurrió un error: {e}"
 
 print("directoria actual: "+os.getcwd())
-prompt=obtener_prompt_aleatorio("/home/seretur/Documentos/prompts.txt")
+prompt=obtener_prompt_aleatorio("/workspaces/Document-images/prompts.txt")
 # prompt="escribe una reseña sobre los récords de velocidad alcanzados en competencias olímpicas de atletismo en los últimos 5 años. Ponle un título destacado"
 
 
@@ -55,7 +55,7 @@ ancho,alto=1586, 2244
 tamanio_fuente=28
 lineaOpciones="Tipografía: "+tipografia+", ancho="+str(ancho)+", alto:"+str(alto)
 
-dirtrabajo="/home/seretur/Documentos/Investigacion/Preparadas/" #CAMBIAR ESTA LÌNEA!!!!
+dirtrabajo="/workspaces/Document-images/Investigacion/Preparadas/" #CAMBIAR ESTA LÌNEA!!!!
 os.chdir(dirtrabajo) 
 
 

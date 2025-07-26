@@ -3,7 +3,7 @@
   "features": {
     "ghcr.io/devcontainers-extra/features/poetry:2": {},
     "ghcr.io/hspaans/devcontainer-features/pytest:2": {},
-    "ghcr.io/devcontainers/features/nvidia-cuda:2": {}
-    
+    "ghcr.io/devcontainers/features/nvidia-cuda:2": {},
+    "ghcr.io/raucha/devcontainer-features/pytorch:1": {}
   }
 }

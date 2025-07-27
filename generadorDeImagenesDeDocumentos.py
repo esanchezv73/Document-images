@@ -40,7 +40,7 @@ prompt=obtener_prompt_aleatorio("/workspaces/Document-images/prompts.txt")
 # prompt="escribe una reseña sobre los récords de velocidad alcanzados en competencias olímpicas de atletismo en los últimos 5 años. Ponle un título destacado"
 
 
-model = GPT4All(llm) # descarga o carga el LLM especificado en llm
+model = GPT4All(llm, device="cpu") # descarga o carga el LLM especificado en llm
 texto=""
 with model.chat_session():
     texto=model.generate(prompt, temp=0.94,max_tokens=910) #temperatura=0.94 para "creatividad" y menor repetición

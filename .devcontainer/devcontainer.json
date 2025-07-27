@@ -1,8 +1,5 @@
 {
 	"name": "Python 3",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/python:3",
-	"features": {
-		"ghcr.io/devcontainers-extra/features/poetry:2": {}
-		}
+	"postCreateCommand": "pip install Pillow gpt4all"
 }

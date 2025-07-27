@@ -1,5 +1,5 @@
 {
 	"name": "Python 3",
 	"image": "mcr.microsoft.com/devcontainers/python:3",
-	"postCreateCommand": "pip install Pillow gpt4all"
+	"postCreateCommand": "pip install Pillow gpt4all --no-dependencies"
 }
